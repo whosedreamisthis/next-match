@@ -3,6 +3,7 @@ import type { Metadata } from 'next';
 import Providers from '@/components/providers';
 import './globals.css';
 import TopNav from '@/components/navbar/TopNav';
+import Container from '@/components/Container';
 
 export const metadata: Metadata = {
 	title: 'Next Match',
@@ -19,7 +20,7 @@ export default function RootLayout({
 			<body>
 				<Providers>
 					<TopNav />
-					{children}
+					<Container>{children}</Container>
 				</Providers>
 			</body>
 		</html>

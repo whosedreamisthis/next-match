@@ -4,12 +4,20 @@ import { Navbar, NavbarBrand, NavbarContent, NavbarItem } from '@heroui/navbar';
 
 import { GiMatchTip } from 'react-icons/gi';
 import { Button } from '@heroui/react';
+import NavLink from './NavLink';
 export default function TopNav() {
 	return (
 		<Navbar
 			maxWidth="xl"
 			className="bg-gradient-to-r from-purple-400 to-purple-700"
-			classNames={{ item: ['text-xl', 'text-white', 'uppercase'] }}
+			classNames={{
+				item: [
+					'text-xl',
+					'text-white',
+					'uppercase',
+					'data-[active=true]:text-yellow-200',
+				],
+			}}
 		>
 			<NavbarBrand as={Link} href="/">
 				<GiMatchTip size={40} className="text-gray-200">
@@ -21,15 +29,10 @@ export default function TopNav() {
 				</div>
 			</NavbarBrand>
 			<NavbarContent justify="center">
-				<NavbarItem as={Link} href="/members">
-					Matches
-				</NavbarItem>
-				<NavbarItem as={Link} href="/lists">
-					Lists
-				</NavbarItem>
-				<NavbarItem as={Link} href="/messages">
-					Messages
-				</NavbarItem>
+				<NavLink href="/members" label="Matches" />
+				<NavLink href="/lists" label="Lists" />
+
+				<NavLink href="/messages" label="Messages" />
 			</NavbarContent>
 			<NavbarContent justify="end">
 				<Button
