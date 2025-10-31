@@ -1,9 +1,23 @@
+'use client';
 import { Card, CardBody, CardHeader } from '@heroui/card';
 import { Input } from '@heroui/input';
 import { Button } from '@heroui/button';
 import { GiPadlock } from 'react-icons/gi';
-
+import { useForm } from 'react-hook-form';
+import { LoginSchema, loginSchema } from '@/lib/schemas/loginSchema';
+import { zodResolver } from '@hookform/resolvers/zod';
 export default function LoginForm() {
+	const {
+		register,
+		handleSubmit,
+		formState: { errors, isValid },
+	} = useForm<LoginSchema>({
+		resolver: zodResolver(loginSchema),
+		mode: 'onTouched',
+	});
+	const onSubmit = (data: LoginSchema) => {
+		console.log(data);
+	};
 	return (
 		<Card className="w-2/5 mx-auto">
 			<CardHeader className="flex flex-col items-center justify-center">
@@ -18,15 +32,34 @@ export default function LoginForm() {
 				</div>
 			</CardHeader>
 			<CardBody>
-				<form action="">
+				<form autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
 					<div className="space-y-4">
-						<Input label="Email" variant="bordered" />
 						<Input
+							autoComplete="username"
+							defaultValue=""
+							label="Email"
+							variant="bordered"
+							type="email"
+							{...register('email')}
+							isInvalid={!!errors.email}
+							errorMessage={errors.email?.message as string}
+						/>
+						<Input
+							autoComplete="current-password"
+							defaultValue=""
 							label="Password"
 							variant="bordered"
 							type="password"
+							{...register('password')}
+							isInvalid={!!errors.password}
+							errorMessage={errors.password?.message as string}
 						/>
-						<Button fullWidth color="secondary" type="submit">
+						<Button
+							isDisabled={!isValid}
+							fullWidth
+							color="secondary"
+							type="submit"
+						>
 							Login
 						</Button>
 					</div>
