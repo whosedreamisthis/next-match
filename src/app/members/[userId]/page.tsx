@@ -1,4 +1,6 @@
 import { getMemberByUserId } from '@/app/actions/memberActions';
+import { CardBody, CardHeader } from '@heroui/card';
+import { Divider } from '@heroui/react';
 import { notFound } from 'next/navigation';
 import React from 'react';
 
@@ -12,5 +14,13 @@ export default async function MemberDetailedPage({
 
 	if (!member) return notFound();
 
-	return <div>{member?.name}</div>;
+	return (
+		<>
+			<CardHeader className="text-2xl font-semibold text-secondary">
+				Profile
+			</CardHeader>
+			<Divider />
+			<CardBody>{member.description}</CardBody>
+		</>
+	);
 }
