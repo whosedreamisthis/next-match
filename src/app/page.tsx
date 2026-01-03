@@ -3,7 +3,7 @@ import * as React from 'react';
 import { FaRegSmile } from 'react-icons/fa';
 import { Button } from '@heroui/button';
 import Link from 'next/link';
-import { auth } from '@/auth';
+import { auth, signOut } from '@/auth';
 
 export default async function Home() {
 	const session = await auth();
@@ -14,19 +14,26 @@ export default async function Home() {
 			{session ? (
 				<div>
 					<pre>{JSON.stringify(session, null, 2)}</pre>
+					<form
+						action={async () => {
+							'use server';
+
+							await signOut();
+						}}
+					>
+						<Button
+							type="submit"
+							color="primary"
+							variant="bordered"
+							startContent={<FaRegSmile size={20} />}
+						>
+							Sign out
+						</Button>
+					</form>
 				</div>
 			) : (
 				<div>Not signed in</div>
 			)}
-			<Link href="/members">
-				<Button
-					color="primary"
-					variant="bordered"
-					startContent={<FaRegSmile size={20} />}
-				>
-					Press me
-				</Button>
-			</Link>
 		</div>
 	);
 }
