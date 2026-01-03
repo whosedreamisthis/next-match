@@ -1,11 +1,15 @@
 'use server';
 
-import { signIn } from '@/auth';
+import { signIn, signOut } from '@/auth';
 import { prisma } from '@/lib/prisma';
 import { LoginSchema } from '@/lib/schemas/loginSchema';
 import { registerSchema, RegisterSchema } from '@/lib/schemas/registerSchema';
 import bcrypt from 'bcryptjs';
 import { AuthError } from 'next-auth';
+
+export async function signOutUser() {
+	await signOut({ redirectTo: '/' });
+}
 
 export async function signInUser(
 	data: LoginSchema
@@ -20,25 +24,24 @@ export async function signInUser(
 		return { status: 'success', data: 'Logged In' };
 	} catch (error) {
 		console.log(error);
-		if (error) {
-			if (error instanceof AuthError) {
-				switch (error.type) {
-					case 'CredentialsSignin':
-						return {
-							status: 'error',
-							error: 'Invalid credentials',
-						};
-						break;
-					default:
-						return {
-							status: 'error',
-							error: 'Something went wrong',
-						};
-					// break;
-				}
+
+		if (error instanceof AuthError) {
+			switch (error.type) {
+				case 'CredentialsSignin':
+					return {
+						status: 'error',
+						error: 'Invalid credentials',
+					};
+					break;
+				default:
+					return {
+						status: 'error',
+						error: 'Something went wrong',
+					};
+				// break;
 			}
-			return { status: 'error', error: 'sommething else went wrong' };
 		}
+		return { status: 'error', error: 'sommething else went wrong' };
 	}
 }
 

@@ -1,11 +1,13 @@
-'use client';
 import { Navbar, NavbarBrand, NavbarContent } from '@heroui/navbar';
 import Link from 'next/link';
 import { GiMatchTip } from 'react-icons/gi';
 import NavLink from './NavLink';
 import { Button } from '@heroui/button';
+import { auth } from '@/auth';
+import UserMenu from './UserMenu';
 
-export default function TopNav() {
+export default async function TopNav() {
+	const session = await auth();
 	return (
 		<Navbar
 			maxWidth="xl"
@@ -19,35 +21,37 @@ export default function TopNav() {
 				],
 			}}
 		>
-			<NavbarBrand as={Link} href="/">
-				<GiMatchTip size={40} className="text-gray-200" />
-				<div className="font-bold text-3xl flex">
-					<span className="text-gray-900">Next</span>
-					<span className="text-gray-200">Match</span>
-				</div>
-			</NavbarBrand>
+			<Link href="/">
+				<NavbarBrand>
+					<GiMatchTip size={40} className="text-gray-200" />
+					<div className="font-bold text-3xl flex">
+						<span className="text-gray-900">Next</span>
+						<span className="text-gray-200">Match</span>
+					</div>
+				</NavbarBrand>
+			</Link>
 			<NavbarContent justify="center">
 				<NavLink label="Matches" href="/members" />
 				<NavLink label="Lists" href="/lists" />
 				<NavLink label="Messages" href="/messages" />
 			</NavbarContent>
 			<NavbarContent justify="end">
-				<Button
-					as={Link}
-					href="/login"
-					variant="bordered"
-					className="text-white"
-				>
-					Login
-				</Button>
-				<Button
-					as={Link}
-					href="/register"
-					variant="bordered"
-					className="text-white"
-				>
-					Register
-				</Button>
+				{session?.user ? (
+					<UserMenu user={session.user} />
+				) : (
+					<>
+						<Link href="/login">
+							<Button variant="bordered" className="text-white">
+								Login
+							</Button>
+						</Link>
+						<Link href="/register">
+							<Button variant="bordered" className="text-white">
+								Register
+							</Button>
+						</Link>
+					</>
+				)}
 			</NavbarContent>
 		</Navbar>
 	);
