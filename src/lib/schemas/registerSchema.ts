@@ -3,7 +3,7 @@ import { z } from 'zod';
 export const registerSchema = z.object({
 	// Old: z.string().email()
 	// New:
-	name: z.string().min(4),
+	name: z.string().min(3),
 	email: z.email({ message: 'Invalid email address' }),
 
 	password: z
