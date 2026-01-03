@@ -8,9 +8,10 @@ import { compare } from 'bcryptjs';
 
 // Notice this is only an object, not a full Auth.js instance
 export default {
-	providers: [
-		Credentials({
-			name: 'credentials',
+	providers: [Credentials({})],
+} satisfies NextAuthConfig;
+/*
+name: 'credentials',
 			async authorize(creds) {
 				const validated = loginSchema.safeParse(creds);
 
@@ -29,7 +30,4 @@ export default {
 				}
 
 				return null;
-			},
-		}),
-	],
-} satisfies NextAuthConfig;
+			},*/
