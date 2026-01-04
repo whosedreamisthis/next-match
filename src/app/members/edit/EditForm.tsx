@@ -1,22 +1,27 @@
 'use client';
+import { updateMemberProfile } from '@/app/actions/userActions';
 import {
 	MemberEditSchema,
 	memberEditSchema,
 } from '@/lib/schemas/memberEditSchema';
+import { handleFormServerErrors } from '@/lib/util';
 import { Button, form, Input, Textarea } from '@heroui/react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Member } from '@prisma/client';
+import { useRouter } from 'next/navigation';
 import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-
+import { toast } from 'react-toastify';
 type Props = {
 	member: Member;
 };
 export default function EditForm({ member }: Props) {
+	const router = useRouter();
 	const {
 		register,
 		handleSubmit,
 		reset,
+		setError,
 		formState: { isValid, isDirty, isSubmitting, errors },
 	} = useForm<MemberEditSchema>({
 		resolver: zodResolver(memberEditSchema),
@@ -34,8 +39,16 @@ export default function EditForm({ member }: Props) {
 		}
 	}, [member, reset]);
 
-	const onSubmit = (data: MemberEditSchema) => {
-		console.log(data);
+	const onSubmit = async (data: MemberEditSchema) => {
+		const result = await updateMemberProfile(data);
+
+		if (result.status === 'success') {
+			toast.success('Profile updated');
+			router.refresh();
+			reset({ ...data });
+		} else {
+			handleFormServerErrors(result, setError);
+		}
 	};
 	return (
 		<form
@@ -77,6 +90,11 @@ export default function EditForm({ member }: Props) {
 					errorMessage={errors.country?.message}
 				/>
 			</div>
+			{errors.root?.serverError && (
+				<p className="text-danger text-sm">
+					{errors.root.serverError.message}
+				</p>
+			)}
 			<Button
 				className="flex self-end"
 				type="submit"
