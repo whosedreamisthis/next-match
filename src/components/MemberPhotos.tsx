@@ -29,6 +29,7 @@ export default function MemberPhotos({ photos, editing, mainImageUrl }: Props) {
 	};
 
 	const onDelete = async (photo: Photo) => {
+		if (photo.url === mainImageUrl) return null;
 		setLoading({ isLoading: true, id: photo.id, type: 'delete' });
 		await deleteImage(photo);
 		router.refresh();
