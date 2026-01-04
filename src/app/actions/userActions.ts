@@ -52,3 +52,21 @@ export async function addImage(url: string, publicId: string) {
 		throw error;
 	}
 }
+
+export async function setMainImage(photo: Photo) {
+	try {
+		const userId = await getAuthUserId();
+
+		await prisma.user.update({
+			where: { id: userId },
+			data: { image: photo.url },
+		});
+		return prisma.member.update({
+			where: { userId },
+			data: { image: photo.url },
+		});
+	} catch (error) {
+		console.log(error);
+		throw error;
+	}
+}
