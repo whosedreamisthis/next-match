@@ -23,13 +23,13 @@ export default async function ChatPage({
 			) : (
 				<div>
 					{messages.map((message) => (
-						<p key={message.id}>
+						<div key={message.id}>
 							<MessageBox
 								key={message.id}
 								message={message}
 								currentUserId={currentUserId}
 							/>
-						</p>
+						</div>
 					))}
 				</div>
 			)}
