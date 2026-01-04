@@ -20,7 +20,6 @@ export function handleFormServerErrors<TFieldValues extends FieldValues>(
 }
 
 export function transformImageUrl(imageUrl?: string | null) {
-	console.log('here');
 	if (!imageUrl) return null;
 
 	if (!imageUrl.includes('cloudinary')) return imageUrl;
@@ -28,11 +27,6 @@ export function transformImageUrl(imageUrl?: string | null) {
 	const uploadIndex = imageUrl.indexOf('/upload/') + '/upload/'.length;
 	const transformation = 'c_fill,w_300,h_300,g_faces/';
 
-	console.log(
-		`${imageUrl.slice(0, uploadIndex)}${transformation}${imageUrl.slice(
-			uploadIndex
-		)}`
-	);
 	return `${imageUrl.slice(0, uploadIndex)}${transformation}${imageUrl.slice(
 		uploadIndex
 	)}`;
