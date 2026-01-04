@@ -3,6 +3,7 @@ import { CardBody, CardHeader } from '@heroui/card';
 import { Divider } from '@heroui/react';
 import { Image } from '@heroui/image';
 import { getMemberPhotosByUserId } from '@/app/actions/memberActions';
+import { transformImageUrl } from '@/lib/util';
 
 export default async function PhotosPage({
 	params,
@@ -28,7 +29,7 @@ export default async function PhotosPage({
 								<Image
 									// width={300}
 									// height={300}
-									src={photo.url}
+									src={transformImageUrl(photo.url)}
 									alt="image of member"
 									removeWrapper
 									className="object-cover absolute inset-0 h-full w-full"

@@ -4,7 +4,7 @@ import { Image } from '@heroui/image';
 
 import { Member } from '@prisma/client';
 import React from 'react';
-import { calculateAge } from '@/lib/util';
+import { calculateAge, transformImageUrl } from '@/lib/util';
 import { Divider } from '@heroui/react';
 import { Button } from '@heroui/button';
 
@@ -23,7 +23,7 @@ export default function MemberSidebar({ member, navLinks }: Props) {
 			<Image
 				height={200}
 				width={200}
-				src={member.image || '/images/user.png'}
+				src={transformImageUrl(member.image) || '/images/user.png'}
 				alt="user profile main image"
 				className="rounded-full mt-6 aspect-square object-cover"
 			/>
