@@ -33,7 +33,8 @@
 		"react-icons": "^5.5.0",
 		"react-toastify": "^11.0.5",
 		"server-only": "^0.0.1",
-		"zod": "^4.3.4"
+		"zod": "^4.3.4",
+		"zustand": "^5.0.9"
 	},
 	"devDependencies": {
 		"@tailwindcss/postcss": "^4",

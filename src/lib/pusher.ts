@@ -28,6 +28,10 @@ export const pusherClient =
 	typeof window !== 'undefined'
 		? globalThis.pusherClientInstance ||
 		  new PusherClient(process.env.NEXT_PUBLIC_PUSHER_API_KEY!, {
+				channelAuthorization: {
+					endpoint: '/api/pusher-auth',
+					transport: 'ajax',
+				},
 				cluster: 'us3',
 				// If you use private channels later, add authEndpoint here
 		  })
