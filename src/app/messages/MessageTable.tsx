@@ -57,7 +57,15 @@ export default function MessageTable({ messages }: Props) {
 						<TableRow key={row.id} className="cursor-pointer">
 							{(columnKey) => (
 								<TableCell>
-									{getKeyValue(row, columnKey)}
+									<div
+										className={`${
+											!row.dateRead && !isOutbox
+												? 'font-bold'
+												: ''
+										} `}
+									>
+										{getKeyValue(row, columnKey)}
+									</div>
 								</TableCell>
 							)}
 						</TableRow>
@@ -67,3 +75,22 @@ export default function MessageTable({ messages }: Props) {
 		</Card>
 	);
 }
+/*<TableBody>
+					{messages.map((row) => (
+						<TableRow key={row.id} className="cursor-pointer">
+							{(columnKey) => (
+								<TableCell>
+									<div
+										className={`${
+											!row.dateRead && !isOutbox
+												? 'font-semibold'
+												: ''
+										} `}
+									>
+										{getKeyValue(row, columnKey)}
+									</div>
+								</TableCell>
+							)}
+						</TableRow>
+					))}
+				</TableBody>*/
