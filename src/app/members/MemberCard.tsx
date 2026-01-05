@@ -1,5 +1,6 @@
 'use client';
 import LikeButton from '@/components/LikeButton';
+import PresenceDot from '@/components/PresenceDot';
 import { calculateAge, transformImageUrl } from '@/lib/util';
 import { Card, CardFooter } from '@heroui/card';
 import { Image } from '@heroui/react';
@@ -42,6 +43,9 @@ export default function MemberCard({ member, likeIds }: Props) {
 					}}
 				>
 					<LikeButton targetId={member.userId} hasLiked={hasLiked} />
+				</div>
+				<div className="absolute top-2 left-3 z-50">
+					<PresenceDot member={member} />
 				</div>
 			</div>
 			<CardFooter className="flex justify-start bg-black bg-dark-gradient overflow-hidden absolute bottom-0 z-10">
