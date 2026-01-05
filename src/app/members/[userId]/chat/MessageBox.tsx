@@ -5,6 +5,7 @@ import clsx from 'clsx';
 import { Avatar } from '@heroui/avatar';
 import { timeAgo, transformImageUrl } from '@/lib/util';
 import { divider } from '@heroui/react';
+import PresenceAvatar from '@/components/PresenceAvatar';
 type Props = {
 	message: MessageDto;
 	currentUserId: string;
@@ -18,15 +19,20 @@ export default function MessageBox({ message, currentUserId }: Props) {
 		if (messageEndRef.current)
 			messageEndRef.current.scrollIntoView({ behavior: 'smooth' });
 	}, [messageEndRef]);
+
 	const renderAvatar = () => {
 		return (
-			<Avatar
-				name={message.senderName}
-				className="self-end"
-				src={
-					transformImageUrl(message.senderImage) || '/images/user.png'
-				}
-			/>
+			<div className="self-end">
+				<PresenceAvatar
+					userId={message.senderId}
+					name={message.senderName}
+					alt="avatar"
+					src={
+						transformImageUrl(message.senderImage) ||
+						'/images/user.png'
+					}
+				/>
+			</div>
 		);
 	};
 

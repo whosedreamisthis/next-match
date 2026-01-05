@@ -17,6 +17,8 @@ import { Button } from '@heroui/button';
 import { AiFillDelete } from 'react-icons/ai';
 import { deleteMessage } from '../actions/messageActions';
 import { truncateString } from '@/lib/util';
+import PresenceAvatar from '@/components/PresenceAvatar';
+import { it } from 'node:test';
 
 type Props = {
 	messages: MessageDto[];
@@ -64,7 +66,10 @@ export default function MessageTable({ messages }: Props) {
 				case 'senderName':
 					return (
 						<div className="flex items-center gap-2 cursor-pointer">
-							<Avatar
+							<PresenceAvatar
+								userId={
+									isOutbox ? item.recipientId : item.senderId
+								}
 								alt="Image of member"
 								src={
 									(isOutbox
