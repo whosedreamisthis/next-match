@@ -1,10 +1,11 @@
 import React from 'react';
 import CardInnerWrapper from '@/components/CardInnerWrapper';
-import { divider } from '@heroui/react';
 import ChatForm from './ChatForm';
 import { getMessageThread } from '@/app/actions/messageActions';
 import { getAuthUserId } from '@/app/actions/authActions';
-import MessageBox from './MessageBox';
+
+import MessageList from './MessageList';
+import { createChatId } from '@/lib/util';
 
 export default async function ChatPage({
 	params,
@@ -14,32 +15,17 @@ export default async function ChatPage({
 	const currentUserId = await getAuthUserId();
 	const { userId } = await params;
 	const messages = await getMessageThread(userId);
-
-	const body = (
-		<div>
-			{' '}
-			{messages.length === 0 ? (
-				'No messages to display'
-			) : (
-				<div>
-					{messages.map((message) => (
-						<div key={message.id}>
-							<MessageBox
-								key={message.id}
-								message={message}
-								currentUserId={currentUserId}
-							/>
-						</div>
-					))}
-				</div>
-			)}
-		</div>
-	);
-
+	const chatId = createChatId(userId, currentUserId);
 	return (
 		<CardInnerWrapper
 			header="Chat"
-			body={<div>{body}</div>}
+			body={
+				<MessageList
+					initialMessages={messages}
+					currentUserId={currentUserId}
+					chatId={chatId}
+				/>
+			}
 			footer={<ChatForm />}
 		/>
 	);
