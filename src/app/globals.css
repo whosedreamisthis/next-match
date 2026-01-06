@@ -18,3 +18,18 @@
 		rgba(0, 0, 0, 0) 100%
 	);
 }
+/* app/globals.css */
+html,
+body {
+	overflow-x: hidden; /* Prevent horizontal scrolling */
+	width: 100%;
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+*,
+*:before,
+*:after {
+	box-sizing: inherit;
+}

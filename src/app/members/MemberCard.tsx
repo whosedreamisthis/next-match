@@ -25,13 +25,18 @@ export default function MemberCard({ member, likeIds }: Props) {
 			as={Link}
 			href={`/members/${member.userId}`}
 			isPressable
+			className="relative" // Ensure the card is the anchor for absolute elements
 		>
 			<Image
 				isZoomed
 				alt={member.name}
-				width={300}
 				src={transformImageUrl(member.image) || '/images/user.png'}
-				className="aspect-square object-cover"
+				// Remove all fixed width/height props
+				className="aspect-square object-cover w-full"
+				classNames={{
+					wrapper: 'w-full !max-w-full', // Forces the container to fill the card
+					img: 'w-full h-full', // Forces the image to fill the container
+				}}
 			/>
 			<div onClick={preventLinkAction} onMouseDown={preventLinkAction}>
 				<div
