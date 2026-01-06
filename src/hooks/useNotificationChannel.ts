@@ -6,12 +6,19 @@ import { useCallback, useEffect, useRef } from 'react';
 import useMessageStore from './useMessageStore';
 import { toast } from 'react-toastify';
 import { newMesssageToast } from '@/components/NewMessageToast';
+import { stat } from 'fs';
+import { useShallow } from 'zustand/shallow';
 
 export const useNotificationChannel = (userId: string | null) => {
 	const channelRef = useRef<Channel | null>(null);
 	const pathname = usePathname();
 	const searchParams = useSearchParams();
-	const add = useMessageStore((state) => state.add);
+	const { add, updateUnreadCount } = useMessageStore(
+		useShallow((state) => ({
+			add: state.add,
+			updateUnreadCount: state.updateUnreadCount,
+		}))
+	);
 	const handleNewMessage = useCallback(
 		(message: MessageDto) => {
 			if (
@@ -19,11 +26,13 @@ export const useNotificationChannel = (userId: string | null) => {
 				searchParams.get('container') !== 'outbox'
 			) {
 				add(message);
+				updateUnreadCount(1);
 			} else if (pathname !== `/members/${message.senderId}/chat`) {
 				newMesssageToast(message);
+				updateUnreadCount(1);
 			}
 		},
-		[add, pathname, searchParams]
+		[add, pathname, searchParams, updateUnreadCount]
 	);
 
 	useEffect(() => {
