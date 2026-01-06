@@ -35,8 +35,14 @@ export async function createMessage(
 			select: messageSelect,
 		});
 		const messageDto = mapMessageToMessageDto(message);
+
 		await pusherServer.trigger(
 			createChatId(userId, recipientUserId),
+			'message:new',
+			messageDto
+		);
+		await pusherServer.trigger(
+			`private-${recipientUserId}`,
 			'message:new',
 			messageDto
 		);
