@@ -5,6 +5,7 @@ import { Channel } from 'pusher-js';
 import { useCallback, useEffect, useRef } from 'react';
 import useMessageStore from './useMessageStore';
 import { toast } from 'react-toastify';
+import { newMesssageToast } from '@/components/NewMessageToast';
 
 export const useNotificationChannel = (userId: string | null) => {
 	const channelRef = useRef<Channel | null>(null);
@@ -19,7 +20,7 @@ export const useNotificationChannel = (userId: string | null) => {
 			) {
 				add(message);
 			} else if (pathname !== `/members/${message.senderId}/chat`) {
-				toast.info(`New message from ${message.senderName}`);
+				newMesssageToast(message);
 			}
 		},
 		[add, pathname, searchParams]
