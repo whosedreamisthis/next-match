@@ -5,9 +5,11 @@ import { Channel } from 'pusher-js';
 import { useCallback, useEffect, useRef } from 'react';
 import useMessageStore from './useMessageStore';
 import { toast } from 'react-toastify';
-import { newMesssageToast } from '@/components/NewMessageToast';
+import { newMessageToast } from '@/components/NotificationToast';
 import { stat } from 'fs';
 import { useShallow } from 'zustand/shallow';
+import { newLikeToast } from '@/components/NotificationToast';
+import { da } from 'zod/v4/locales';
 
 export const useNotificationChannel = (userId: string | null) => {
 	const channelRef = useRef<Channel | null>(null);
@@ -28,18 +30,25 @@ export const useNotificationChannel = (userId: string | null) => {
 				add(message);
 				updateUnreadCount(1);
 			} else if (pathname !== `/members/${message.senderId}/chat`) {
-				newMesssageToast(message);
+				newMessageToast(message);
 				updateUnreadCount(1);
 			}
 		},
 		[add, pathname, searchParams, updateUnreadCount]
 	);
 
+	const handleNewLike = useCallback(
+		(data: { name: string; image: string | null; userId: string }) => {
+			newLikeToast(data.name, data.image, data.userId);
+		},
+		[]
+	);
 	useEffect(() => {
 		if (!userId || !pusherClient) return;
 		if (!channelRef.current) {
 			channelRef.current = pusherClient.subscribe(`private-${userId}`);
 			channelRef.current.bind('message:new', handleNewMessage);
+			channelRef.current.bind('like:new', handleNewLike);
 		}
 
 		return () => {

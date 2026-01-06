@@ -33,7 +33,3 @@ export default function NewMessageToast({ message }: Props) {
 		</Link>
 	);
 }
-
-export const newMesssageToast = (message: MessageDto) => {
-	toast.info(<NewMessageToast message={message} />);
-};
