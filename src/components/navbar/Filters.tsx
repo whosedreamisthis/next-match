@@ -29,6 +29,11 @@ export default function Filters() {
 		{ value: 'female', icon: FaFemale },
 	];
 
+	const selectedGender = searchParams.get('gender')?.split(',') || [
+		'male',
+		'female',
+	];
+
 	const handleAgeSelect = (value: number[]) => {
 		const params = new URLSearchParams(searchParams);
 		params.set('ageRange', value.join(','));
@@ -47,6 +52,19 @@ export default function Filters() {
 		}
 	};
 
+	const handleGenderSelect = (value: string) => {
+		const params = new URLSearchParams(searchParams);
+		if (selectedGender.includes(value)) {
+			params.set(
+				'gender',
+				selectedGender.filter((g) => g !== value).toString()
+			);
+		} else {
+			params.set('gender', [...selectedGender, value].toString());
+		}
+		router.replace(`${pathname}?${params}`);
+	};
+
 	if (pathname !== '/members') return null;
 
 	return (
@@ -62,7 +80,14 @@ export default function Filters() {
 							key={value}
 							size="sm"
 							isIconOnly
-							color="secondary"
+							color={
+								selectedGender.includes(value)
+									? 'secondary'
+									: 'default'
+							}
+							onPress={() => {
+								handleGenderSelect(value);
+							}}
 						>
 							<Icon size={24} />
 						</Button>
